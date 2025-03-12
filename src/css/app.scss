@@ -1,0 +1,30 @@
+@import 'fonts';
+// app global css in SCSS form
+.container {
+  max-width: 1920px;
+  width: 100%;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+:root {
+  --font-family: 'IBM Plex Mono', sans-serif;
+  --second-family: 'Inter', sans-serif;
+  --third-family: 'SF Pro Text', sans-serif;
+  --font3: 'SF Pro Display', sans-serif;
+  --font4: 'Roboto Flex', sans-serif;
+  --font5: 'Inter Tight', sans-serif;
+  --font6: 'SF Compact Display', sans-serif;
+}
+
+body {
+  font-family: var(--second-family);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-family);
+}
