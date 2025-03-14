@@ -3,19 +3,19 @@
     <q-header class="header shadow-0">
       <div class="container">
         <q-toolbar class="justify-between q-p-none">
-          <q-btn
-            align="between"
-            class="btn-fixed-width"
-            color="white"
-            label="На сайт"
-            icon="chevron_left"
-            href="https://warpoint.ru/"
-            outline
-          />
+          <q-btn href="https://warpoint.ru/" class="header__back-btn">
+            <q-icon name="svguse:icons.svg#chevron-left | 0 0 20 20"></q-icon>
+
+            на сайт
+          </q-btn>
           <img alt="Warpoint logo" src="~assets/logo.svg" />
 
           <q-select
+            class="header__select"
             filled
+            borderless
+            dense
+            hide-bottom-space
             v-model="model"
             :options="options"
             option-value="id"
@@ -23,6 +23,7 @@
             option-disable="inactive"
             emit-value
             map-options
+            hide-dropdown-icon
           />
         </q-toolbar>
       </div>
@@ -57,11 +58,60 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .header {
-  padding: 20px 0;
+  padding: 15px 0;
   background: #101114;
   box-shadow: none;
+  &__back-btn {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px 10px 16px;
+    border: 1px solid rgba(196, 200, 207, 0.2);
+    border-radius: 24px;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 123%;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #c4c8cf;
+    i {
+      margin-top: -1px;
+      height: 20px;
+      width: 20px;
+      margin-right: 4px;
+    }
+  }
+  .q-field--auto-height.q-field--dense .q-field__control,
+  .q-field--auto-height.q-field--dense .q-field__native {
+    min-height: inherit;
+  }
+  .q-field--dark .q-field__control:before,
+  .q-field--filled .q-field__control:after {
+    display: none;
+  }
+  &__select {
+    .q-field__control {
+      border: 1px solid rgba(196, 200, 207, 0.2);
+      border-radius: 24px;
+      padding: 11px 12px;
+      min-width: 57px;
+      box-sizing: border-box;
+    }
+
+    .q-field__native {
+      padding: 0;
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 123%;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #c4c8cf;
+    }
+  }
+
   .q-toolbar {
     padding: 0;
   }
