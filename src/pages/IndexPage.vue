@@ -8,7 +8,7 @@
           <q-card class="card" flat>
             <q-card-section>
               <div class="card__top">
-                <q-img src="~assets/gift.svg" />
+                <q-img src="~assets/card.svg" />
                 <h3 class="card__title q-ma-none">ПЛАСТИКОВЫЙ СЕРТИФИКАТ</h3>
               </div>
               <div class="card__desc">
@@ -25,28 +25,39 @@
             </q-card-section>
           </q-card>
 
-          <q-card class="card">
+          <q-card class="card" flat>
             <q-card-section>
-              <h2>ONLINE-СЕРТИФИКАТ</h2>
-              <p>
-                Мгновение — и подарочный сертификат в вашем распоряжении. Подарок прилетит на e-mail
-                получателя
-              </p>
-              <q-btn color="primary" label="КУПИТЬ" />
+              <div class="card__top">
+                <q-img src="~assets/gift.svg" />
+                <h3 class="card__title q-ma-none">online-сертификат</h3>
+              </div>
+              <div class="card__desc">
+                <p>
+                  Мгновение — и подарочный сертификат в вашем распоряжении. Подарок прилетит на
+                  e-mail получателя
+                </p>
+              </div>
+              <q-btn class="card__button" color="primary" to="/buy/" label="купить" />
             </q-card-section>
           </q-card>
         </div>
       </div>
-
-      <q-card class="my-card">
-        <q-card-section>
-          <h2>У ВАС ЕСТЬ СЕРТИФИКАТ?</h2>
-          <p>Ура! Самое время отправиться тратить денежки!</p>
-          <p>А здесь можно узнать точное их количество:</p>
-          <q-btn color="primary" to="/examination/" label="ПРОВЕРИТЬ БАЛАНС" />
-        </q-card-section>
-      </q-card>
     </div>
+    <q-card class="card card--full" flat>
+      <q-card-section>
+        <div class="card__top">
+          <h3 class="card__title q-ma-none">У вас есть сертификат?</h3>
+          <q-img src="~assets/heart.svg" />
+        </div>
+        <div class="card__desc">
+          <p>
+            Ура! Самое время отправиться тратить денежки! А&nbsp;здесь можно узнать точное
+            их&nbsp;количество:
+          </p>
+        </div>
+        <q-btn class="card__button" color="primary" to="/examination/" label="проверить баланс" />
+      </q-card-section>
+    </q-card>
   </q-page>
   <FaqSection></FaqSection>
 </template>
@@ -88,7 +99,15 @@ import FaqSection from 'src/components/FaqSection.vue'
   max-width: 640px;
   width: 100%;
   background-color: #0d0e10;
-
+  &--full {
+    margin-top: 32px;
+    max-width: 100%;
+    .card__desc {
+      margin: 0 auto 16px;
+      max-width: 508px;
+      padding: 0;
+    }
+  }
   &__top {
     display: flex;
     align-items: center;
@@ -117,6 +136,9 @@ import FaqSection from 'src/components/FaqSection.vue'
     text-align: center;
     color: #8f96a3;
     text-align: center;
+    margin-bottom: 24px;
+    padding: 0 60px;
+    box-sizing: border-box;
     p {
       margin-bottom: 0;
       margin-top: 20px;
@@ -135,7 +157,7 @@ import FaqSection from 'src/components/FaqSection.vue'
   }
   &__button {
     display: block;
-    margin: 24px auto 0;
+    margin: auto auto 0;
     width: 100%;
     max-width: 224px;
     border-radius: 10px;
@@ -147,6 +169,11 @@ import FaqSection from 'src/components/FaqSection.vue'
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: #c4c8cf;
+  }
+  .q-card__section {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 }
 </style>

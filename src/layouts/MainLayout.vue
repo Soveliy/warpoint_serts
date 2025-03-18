@@ -102,6 +102,7 @@ export default {
     }
 
     .q-field__native {
+      justify-content: center;
       padding: 0;
       font-weight: 600;
       font-size: 13px;

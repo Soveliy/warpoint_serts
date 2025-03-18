@@ -1,20 +1,25 @@
 <template>
-  <q-list bordered class="faq-list">
-    <q-expansion-item
-      v-for="(item, index) in faqItems"
-      :key="index"
-      expand-separator
-      group="faq"
-      :label="item.question"
-      header-class="text-weight-bold"
-    >
-      <q-card>
-        <q-card-section>
-          {{ item.answer }}
-        </q-card-section>
-      </q-card>
-    </q-expansion-item>
-  </q-list>
+  <div class="faq">
+    <div class="container">
+      <div class="faq__title">часто задаваемые вопросы</div>
+      <q-list bordered class="faq__list">
+        <q-expansion-item
+          v-for="(item, index) in faqItems"
+          :key="index"
+          expand-separator
+          group="faq"
+          :label="item.question"
+          header-class="text-weight-bold"
+        >
+          <q-card>
+            <q-card-section>
+              {{ item.answer }}
+            </q-card-section>
+          </q-card>
+        </q-expansion-item>
+      </q-list>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -64,9 +69,58 @@ const faqItems = ref([
 ])
 </script>
 
-<style scoped>
-.faq-list {
-  max-width: 600px;
-  margin: auto;
+<style lang="scss">
+.faq {
+  padding: 144px 0 280px;
+  &__title {
+    font-family: var(--font-family);
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 125%;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 64px;
+  }
+  &__list {
+    max-width: 1120px;
+    margin: 0 auto;
+    border: 0;
+    .q-expansion-item + .q-expansion-item {
+      margin-top: 16px;
+    }
+    .q-item {
+      padding: 16px 24px;
+      box-sizing: border-box;
+      border-radius: 16px;
+    }
+    .q-item__label {
+      font-family: var(--second-family);
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 121%;
+      color: #c4c8cf;
+    }
+    .q-list--dark .q-item__section--side:not(.q-item__section--avatar),
+    .q-item--dark .q-item__section--side:not(.q-item__section--avatar) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      border: 1px solid #0554f8;
+      border-radius: 12px;
+      width: 48px;
+      height: 48px;
+      background: rgba(5, 84, 248, 0.1);
+    }
+    .q-card__section {
+      padding: 16px 24px 32px;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 121%;
+      color: #8f96a3;
+    }
+  }
 }
 </style>
