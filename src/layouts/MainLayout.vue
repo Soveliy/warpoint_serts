@@ -8,7 +8,9 @@
 
             на сайт
           </q-btn>
-          <img alt="Warpoint logo" src="~assets/logo.svg" />
+          <q-btn class="header__logo" to="/">
+            <img alt="Warpoint logo" src="~assets/logo.svg" />
+          </q-btn>
 
           <q-select
             class="header__select"
@@ -63,6 +65,21 @@ export default {
   padding: 15px 0;
   background: #101114;
   box-shadow: none;
+  &__logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background: transparent;
+    box-shadow: none;
+    &::before {
+      display: none;
+    }
+    .q-focus-helper {
+      display: none;
+    }
+  }
+
   &__back-btn {
     display: flex;
     align-items: center;

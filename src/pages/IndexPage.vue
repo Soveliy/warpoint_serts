@@ -13,12 +13,12 @@
               </div>
               <div class="card__desc">
                 <p>
-                  Для тех, кто предпочитает вручать подарки лично! Приобрести пластиковый сертификат
-                  можно <b>только на локации</b>.
+                  Для тех, кто предпочитает вручать подарки лично! <br />
+                  Приобрести пластиковый сертификат можно <b>только на&nbsp;локации</b>.
                 </p>
                 <p>
-                  Если вы уже забрали сертификат, активируйте его, пополнив баланс на необходимую
-                  сумму
+                  Если вы&nbsp;уже забрали сертификат, активируйте его, пополнив баланс
+                  на&nbsp;необходимую сумму
                 </p>
               </div>
               <q-btn class="card__button" color="primary" to="/activate/" label="активировать" />
@@ -70,6 +70,9 @@ import FaqSection from 'src/components/FaqSection.vue'
 <style lang="scss" scoped>
 .hero {
   padding-top: 80px;
+  @media (max-width: 992px) {
+    padding-top: 48px;
+  }
   &__title {
     font-weight: 600;
     font-size: 40px;
@@ -78,6 +81,11 @@ import FaqSection from 'src/components/FaqSection.vue'
     text-transform: uppercase;
     text-align: center;
     color: #fff;
+    @media (max-width: 992px) {
+      font-size: 22px;
+      line-height: 109%;
+      letter-spacing: inherit;
+    }
   }
   &__desc {
     font-weight: 500;
@@ -85,20 +93,34 @@ import FaqSection from 'src/components/FaqSection.vue'
     line-height: 121%;
     text-align: center;
     color: #8f96a3;
+    @media (max-width: 992px) {
+      margin-top: 8px;
+      font-size: 16px;
+      line-height: 121%;
+    }
   }
   &__cards {
     margin-top: 58px;
+    @media (max-width: 992px) {
+      margin-top: 40px;
+    }
     &-row {
       gap: 104px;
+      @media (max-width: 992px) {
+        gap: 24px;
+      }
     }
   }
 }
 .card {
   border-radius: 0.5rem;
   padding: 2rem 0rem;
-  max-width: 640px;
+  max-width: 40rem;
   width: 100%;
   background-color: #0d0e10;
+  @media (max-width: 992px) {
+    padding: 1rem 0;
+  }
   &--full {
     margin-top: 32px;
     max-width: 100%;
@@ -114,9 +136,17 @@ import FaqSection from 'src/components/FaqSection.vue'
     gap: 16px;
     justify-content: center;
     margin-bottom: 24px;
+    @media (max-width: 992px) {
+      flex-direction: row-reverse;
+      gap: 8px;
+    }
     .q-img {
       width: 48px;
       height: 48px;
+      @media (max-width: 992px) {
+        height: 32px;
+        width: 32px;
+      }
     }
   }
   &__title {
@@ -127,21 +157,33 @@ import FaqSection from 'src/components/FaqSection.vue'
     text-transform: uppercase;
     text-align: center;
     color: #ececee;
+    @media (max-width: 992px) {
+      font-size: 18px;
+      line-height: 133%;
+      letter-spacing: inherit;
+    }
   }
   &__desc {
     font-family: var(--second-family);
     font-weight: 500;
-    font-size: 18px;
+    font-size: 1.125rem;
     line-height: 121%;
     text-align: center;
     color: #8f96a3;
     text-align: center;
-    margin-bottom: 24px;
-    padding: 0 60px;
+    margin-bottom: 1.5rem;
+    padding: 0 3.75rem;
     box-sizing: border-box;
+    @media (max-width: 992px) {
+      padding: 0;
+      font-size: 1rem;
+    }
     p {
       margin-bottom: 0;
       margin-top: 20px;
+      @media (max-width: 992px) {
+        margin-top: 1rem;
+      }
     }
     > *:first-child {
       margin-top: 0;
@@ -169,6 +211,10 @@ import FaqSection from 'src/components/FaqSection.vue'
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: #c4c8cf;
+    @media (max-width: 992px) {
+      max-width: 100%;
+      padding: 16px;
+    }
   }
   .q-card__section {
     height: 100%;

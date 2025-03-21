@@ -72,6 +72,9 @@ const faqItems = ref([
 <style lang="scss">
 .faq {
   padding: 144px 0 280px;
+  @media (max-width: 992px) {
+    padding: 60px 0;
+  }
   &__title {
     font-family: var(--font-family);
     font-weight: 600;
@@ -82,6 +85,9 @@ const faqItems = ref([
     text-align: center;
     color: #fff;
     margin-bottom: 64px;
+    @media (max-width: 992px) {
+      font-size: 20px;
+    }
   }
   &__list {
     max-width: 1120px;
@@ -94,6 +100,9 @@ const faqItems = ref([
       padding: 16px 24px;
       box-sizing: border-box;
       border-radius: 16px;
+      @media (max-width: 992px) {
+        padding: 0.75rem 1rem;
+      }
     }
     .q-item__label {
       font-family: var(--second-family);
@@ -101,6 +110,9 @@ const faqItems = ref([
       font-size: 24px;
       line-height: 121%;
       color: #c4c8cf;
+      @media (max-width: 992px) {
+        font-size: 16px;
+      }
     }
     .q-list--dark .q-item__section--side:not(.q-item__section--avatar),
     .q-item--dark .q-item__section--side:not(.q-item__section--avatar) {
@@ -113,6 +125,10 @@ const faqItems = ref([
       width: 48px;
       height: 48px;
       background: rgba(5, 84, 248, 0.1);
+      @media (max-width: 992px) {
+        height: 32px;
+        width: 32px;
+      }
     }
     .q-card__section {
       padding: 16px 24px 32px;
@@ -120,6 +136,9 @@ const faqItems = ref([
       font-size: 18px;
       line-height: 121%;
       color: #8f96a3;
+      @media (max-width: 992px) {
+        font-size: 16px;
+      }
     }
   }
 }

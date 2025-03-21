@@ -1,307 +1,382 @@
 <template>
-  <div class="q-pa-md">
-    <q-stepper v-model="step" flat header-nav animated keep-alive>
-      <!-- Шаг 1: Ввод номера сертификата -->
-      <q-step name="1" title="Шаг 1" subtitle="Введите данные сертификата">
-        <div>
-          <q-input
-            filled
-            v-model="form.certificateNumber"
-            label="Номер сертификата"
-            :rules="[(val) => !!val || 'Поле обязательно']"
-            lazy-rules
-            @input="errors.step1 = ''"
-          />
-          <div class="q-mt-md">
-            <q-btn color="primary" label="Далее" @click="goToStep2" />
-            <div v-if="errors.step1" class="text-negative q-mt-xs">
-              {{ errors.step1 }}
-            </div>
+  <q-page class="page">
+    <div class="page__head">
+      <h1 class="page__title">покупка online-сертификата</h1>
+    </div>
+    <q-form class="form">
+      <div class="form__head">
+        <q-btn class="form__back-btn" @click="prevStep" :disable="isFirstStep">
+          <q-icon name="svguse:icons.svg#arrow_left | 0 0 32 32"></q-icon>
+        </q-btn>
+        <div class="form__steps">
+          <span>{{ step }} из {{ totalSteps }}</span>
+          <div class="form__progress">
+            <div class="form__current-progress" :style="{ width: progressWidth }"></div>
           </div>
         </div>
-      </q-step>
+      </div>
 
-      <!-- Шаг 2: Выбор суммы пополнения -->
-      <q-step name="2" title="Шаг 2" subtitle="Выберите сумму пополнения">
-        <div>
-          <q-radio
-            v-model="form.sum"
-            val="1000"
-            label="1 000 ₽"
-            @update:model-value="onSumChange"
-          />
-          <q-radio
-            v-model="form.sum"
-            val="5000"
-            label="5 000 ₽"
-            @update:model-value="onSumChange"
-          />
-          <q-radio
-            v-model="form.sum"
-            val="10000"
-            label="10 000 ₽"
-            @update:model-value="onSumChange"
-          />
-          <q-radio
-            v-model="form.sum"
-            val="20000"
-            label="20 000 ₽"
-            @update:model-value="onSumChange"
-          />
-          <q-radio
-            v-model="form.sum"
-            val="50000"
-            label="50 000 ₽"
-            @update:model-value="onSumChange"
-          />
-          <q-radio
-            v-model="form.sum"
-            val="custom"
-            label="Другая сумма (от 500 до 100 000 ₽)"
-            @update:model-value="onSumChange"
-          />
-
-          <!-- Поле для ввода произвольной суммы -->
-          <q-input
-            v-if="form.sum === 'custom'"
-            filled
-            type="number"
-            v-model.number="form.customSum"
-            label="Введите сумму"
-            :rules="[customSumRule]"
-            lazy-rules
-            @input="errors.step2 = ''"
-            class="q-mt-md"
-          />
-
-          <div class="q-mt-md">
-            <q-btn color="primary" label="Далее" @click="goToStep3" />
-            <q-btn flat color="secondary" label="Назад" class="q-ml-sm" @click="step = '1'" />
-            <div v-if="errors.step2" class="text-negative q-mt-xs">
-              {{ errors.step2 }}
+      <div class="form__body">
+        <q-stepper v-model="step" flat animated>
+          <q-step :name="1" subtitle="Введите данные">
+            <div class="form__stepper-title">выбор номинала</div>
+            <div class="to-whom">
+              <q-btn-toggle
+                v-model="form.giftTo"
+                spread
+                unelevated
+                rounded
+                no-wrap
+                :options="[
+                  { label: 'Себе', value: 'toMe' },
+                  { label: 'В подарок', value: 'gift' },
+                ]"
+              />
+              <div class="to-whom__row">
+                <q-radio
+                  v-model="form.giftTo"
+                  val="myself"
+                  label="Себе"
+                  :error="errors.giftTo"
+                  :error-message="errors.giftTo"
+                />
+                <q-radio
+                  v-model="form.giftTo"
+                  val="gift"
+                  label="В подарок"
+                  :error="errors.giftTo"
+                  :error-message="errors.giftTo"
+                />
+              </div>
             </div>
-          </div>
-        </div>
-      </q-step>
-
-      <!-- Шаг 3: Контактные данные -->
-      <q-step name="3" title="Шаг 3" subtitle="Введите контактные данные">
-        <div>
-          <q-input
-            filled
-            v-model="form.name"
-            label="Имя"
-            :rules="[(val) => !!val || 'Поле обязательно']"
-            lazy-rules
-            @input="errors.step3 = ''"
-          />
-          <q-input
-            filled
-            v-model="form.phone"
-            label="Телефон"
-            :rules="[phoneRule]"
-            lazy-rules
-            @input="errors.step3 = ''"
-            class="q-mt-md"
-          />
-          <q-input
-            filled
-            v-model="form.email"
-            label="Email"
-            :rules="[emailRule]"
-            lazy-rules
-            @input="errors.step3 = ''"
-            class="q-mt-md"
-          />
-
-          <div class="q-mt-md">
-            <q-btn color="primary" label="Далее" @click="goToStep4" />
-            <q-btn flat color="secondary" label="Назад" class="q-ml-sm" @click="step = '2'" />
-            <div v-if="errors.step3" class="text-negative q-mt-xs">
-              {{ errors.step3 }}
+            <div class="form__group">
+              <div class="form__item">
+                <label for="" class="form__item-label">выберите сумму</label>
+                <div class="form__radious-group">
+                  <q-btn-toggle
+                    v-model="form.sum"
+                    spread
+                    unelevated
+                    rounded
+                    no-wrap
+                    :options="[
+                      { label: '1 000 ₽', value: '1 000' },
+                      { label: '2 000 ₽', value: '2 000' },
+                      { label: '5 000 ₽', value: '5 000' },
+                      { label: '20 000 ₽', value: '20 000' },
+                      { label: '50 000 ₽', value: '50 000' },
+                    ]"
+                  />
+                </div>
+              </div>
+              <div class="form__item">
+                <q-input
+                  class="form__input form__input--type-2"
+                  outlined
+                  v-model="text"
+                  label="или укажите свою"
+                  stack-label
+                  placeholder="от 500 до 100 000 ₽"
+                  :dense="dense"
+                />
+              </div>
             </div>
-          </div>
-        </div>
-      </q-step>
 
-      <!-- Шаг 4: Подтверждение -->
-      <q-step name="4" title="Шаг 4" subtitle="Подтверждение">
-        <div class="q-my-md">
-          <div><b>Номер сертификата:</b> {{ form.certificateNumber }}</div>
-          <div>
-            <b>Сумма:</b>
-            <span v-if="form.sum !== 'custom'"> {{ formatSum(form.sum) }} ₽ </span>
-            <span v-else> {{ form.customSum }} ₽ </span>
-          </div>
-          <div><b>Имя:</b> {{ form.name }}</div>
-          <div><b>Телефон:</b> {{ form.phone }}</div>
-          <div><b>Email:</b> {{ form.email }}</div>
-          <div><b>Срок действия:</b> до 12.12.2024 (пример)</div>
-
-          <q-checkbox
-            v-model="form.acceptPolicy"
-            label="Нажимая «Оплатить», я соглашаюсь с Офертой и Политикой обработки персональных данных"
-            class="q-mt-md"
-            :rules="[(val) => !!val || 'Необходимо принять условия']"
-            lazy-rules
-            @update:model-value="errors.step4 = ''"
-          />
-
-          <div class="q-mt-md">
-            <q-btn color="primary" label="Оплатить" @click="submitPayment" />
-            <q-btn flat color="secondary" label="Назад" class="q-ml-sm" @click="step = '3'" />
-          </div>
-          <div v-if="errors.step4" class="text-negative q-mt-xs">
-            {{ errors.step4 }}
-          </div>
-
-          <!-- Блок для отображения результата оплаты -->
-          <div v-if="paymentResult.status" class="q-mt-lg">
-            <div :class="paymentResult.success ? 'text-positive' : 'text-negative'">
-              {{ paymentResult.message }}
+            <q-btn
+              class="form__button"
+              color="primary"
+              :label="isLastStep ? 'Завершить' : 'Далее'"
+              @click="nextStep"
+            />
+          </q-step>
+          <q-step :name="2" subtitle="Введите данные">
+            <div class="form__stepper-title">кому подарок</div>
+            <div class="form__stepper-desc">Сертификат мы отправим на указанный e-mail</div>
+            <div class="form__group">
+              <div class="form__item">
+                <q-input
+                  class="form__input form__input--type-2"
+                  outlined
+                  v-model="form.name"
+                  label="Имя"
+                  stack-label
+                  placeholder="Введите имя"
+                  :dense="dense"
+                />
+              </div>
+              <div class="form__item">
+                <div class="phone-input">
+                  <IntlTelInput
+                    v-model="form.phone"
+                    :options="{
+                      initialCountry: 'ru',
+                      separateDialCode: true,
+                      strictMode: true,
+                    }"
+                  />
+                  <label for="" class="form__item-label">телефон</label>
+                </div>
+                <!-- <q-input
+                  class="form__input form__input--type-2"
+                  outlined
+                  v-model="form.phone"
+                  label="телефон"
+                  stack-label
+                  placeholder="+7 (000) 000-00-00"
+                  :dense="dense"
+                /> -->
+              </div>
+              <div class="form__item">
+                <q-input
+                  class="form__input form__input--type-2"
+                  outlined
+                  v-model="form.email"
+                  label="email"
+                  stack-label
+                  placeholder="youremail@email.com"
+                  :dense="dense"
+                />
+              </div>
             </div>
-          </div>
-        </div>
-      </q-step>
-    </q-stepper>
-  </div>
+            <q-btn
+              class="form__button"
+              color="primary"
+              :label="isLastStep ? 'Завершить' : 'Далее'"
+              @click="nextStep"
+            />
+          </q-step>
+          <q-step :name="3" subtitle="Введите данные">
+            <div class="form__stepper-title">ваши контактные данные</div>
+            <div class="form__group">
+              <div class="form__item">
+                <q-input
+                  class="form__input form__input--type-2"
+                  outlined
+                  v-model="form.recipientName"
+                  label="Имя"
+                  stack-label
+                  placeholder="Введите имя"
+                  :dense="dense"
+                />
+              </div>
+              <div class="form__item">
+                <q-input
+                  class="form__input form__input--type-2"
+                  outlined
+                  v-model="form.recipientPhone"
+                  label="телефон"
+                  stack-label
+                  placeholder="+7 (000) 000-00-00"
+                  :dense="dense"
+                />
+              </div>
+              <div class="form__item">
+                <q-input
+                  class="form__input form__input--type-2"
+                  outlined
+                  v-model="form.recipientEmail"
+                  label="email"
+                  stack-label
+                  placeholder="youremail@email.com"
+                  :dense="dense"
+                />
+              </div>
+            </div>
+            <q-btn
+              class="form__button"
+              color="primary"
+              :label="isLastStep ? 'Завершить' : 'Далее'"
+              @click="nextStep"
+            />
+          </q-step>
+
+          <q-step :name="4" subtitle="Введите данные">
+            <div class="form__group">
+              <div class="form__item">
+                <q-input
+                  class="form__textarea"
+                  outlined
+                  v-model="form.comment"
+                  label="поздравление"
+                  stack-label
+                  placeholder="Добавьте приятных слов к подарку"
+                  :dense="dense"
+                  type="textarea"
+                />
+                <span class="form__item-counter">{{ 360 - form.comment.length }}</span>
+              </div>
+
+              <q-btn
+                class="form__button"
+                color="primary"
+                :label="isLastStep ? 'Завершить' : 'Далее'"
+                @click="nextStep"
+              />
+            </div>
+          </q-step>
+          <q-step :name="5" subtitle="Введите данные">
+            <div class="time">
+              <div class="form__stepper-title">когда отправить подарок?</div>
+              <div class="time__row row justify-center">
+                <q-btn class="time__btn time__btn--red" label="Сейчас" @click="alert = true" />
+                <q-btn
+                  class="time__btn"
+                  label="выбрать время"
+                  color="primary"
+                  @click="dateWindow = true"
+                />
+                <q-dialog v-model="dateWindow">
+                  <q-card>
+                    <q-date v-model="form.date" minimal :locale="myLocale" />
+                    <q-input
+                      class="form__input form__input--type-3"
+                      outlined
+                      v-model="form.recipientName"
+                      label="Имя"
+                      stack-label
+                      placeholder="Введите имя"
+                    />
+                    <q-card-actions align="center">
+                      <q-btn flat label="OK" color="primary" v-close-popup />
+                    </q-card-actions>
+                  </q-card>
+                </q-dialog>
+              </div>
+            </div>
+            <div class="form__stepper-title">проверьте, всё ли верно:</div>
+            <div class="data">
+              <div class="data__items">
+                <div class="data-item">
+                  <div class="data-item__label">Сумма сертификата</div>
+                  <div class="data-item__value">{{ form.sum }}</div>
+                </div>
+                <div class="data-item">
+                  <div class="data-item__label">Срок действия</div>
+                  <div class="data-item__value">до 12.12.2024</div>
+                </div>
+              </div>
+              <div class="data__items">
+                <div class="data-item">
+                  <div class="data-item__label">Отправитель</div>
+                  <div class="data-item__value">{{ form.name }}</div>
+                  <div class="data-item__value">{{ form.phone }}</div>
+                  <div class="data-item__value">{{ form.email }}</div>
+                </div>
+                <div class="data-item">
+                  <div class="data-item__label">Получатель</div>
+                  <div class="data-item__value">{{ form.recipientName }}</div>
+                  <div class="data-item__value">{{ form.recipientPhone }}</div>
+                  <div class="data-item__value">{{ form.recipientEmail }}</div>
+                </div>
+              </div>
+              <div class="data__items">
+                <div class="data-item">
+                  <div class="data-item__label">Поздравление</div>
+                  <div class="data-item__value">{{ form.comment }}</div>
+                </div>
+              </div>
+              <q-checkbox v-model="form.agree" size="md">
+                Нажимая <strong>«Оплатить»</strong>, <br />
+                я соглашаюсь с
+                <a href="/oferta" class="text-primary" target="_blank">Офертой</a> и
+                <a href="/policy" class="text-primary" target="_blank"
+                  >Политикой обработки персональных данных</a
+                >
+              </q-checkbox>
+            </div>
+            <q-btn
+              class="form__button"
+              color="primary"
+              :label="isLastStep ? 'Завершить' : 'Далее'"
+              @click="nextStep"
+            />
+          </q-step>
+        </q-stepper>
+      </div>
+    </q-form>
+  </q-page>
 </template>
 
 <script>
+import { ref, computed } from 'vue'
+import IntlTelInput from 'intl-tel-input/vueWithUtils'
+import 'intl-tel-input/styles'
+
 export default {
-  name: 'CertificateActivation',
-  data() {
-    return {
-      step: '1',
-      form: {
-        certificateNumber: '',
-        sum: null,
-        customSum: null,
-        name: '',
-        phone: '',
-        email: '',
-        acceptPolicy: false,
-      },
-      errors: {
-        step1: '',
-        step2: '',
-        step3: '',
-        step4: '',
-      },
-      paymentResult: {
-        status: false,
-        success: false,
-        message: '',
-      },
+  components: {
+    IntlTelInput,
+  },
+  setup() {
+    const step = ref(1)
+    const totalSteps = computed(() => (form.value.giftTo === 'toMe' ? 3 : 5))
+    const dateWindow = ref(false)
+    const myLocale = {
+      /* начиная с понедельника */
+      days: 'Понедельник_Вторник_Среда_Четверг_Пятница_Суббота_Воскресенье'.split('_'),
+      daysShort: 'Пн_Вт_Ср_Чт_Пт_Сб_Вс'.split('_'),
+      months:
+        'Январь_Февраль_Март_Апрель_Май_Июнь_Июль_Август_Сентябрь_Октябрь_Ноябрь_Декабрь'.split(
+          '_',
+        ),
+      monthsShort: 'Янв_Фев_Мар_Апр_Май_Июн_Июл_Авг_Сен_Окт_Ноя_Дек'.split('_'),
+      firstDayOfWeek: 1, // 0-6, 0 - Воскресенье, 1 - Понедельник, ...
+      format24h: true,
+      pluralDay: 'дней',
     }
-  },
-  computed: {
-    customSumRule() {
-      return (val) => {
-        if (this.form.sum !== 'custom') return true
-        if (!val) return 'Поле обязательно'
-        const numericVal = parseInt(val, 10)
-        if (numericVal < 500 || numericVal > 100000) {
-          return 'Сумма должна быть от 500 до 100000'
-        }
-        return true
-      }
-    },
-    phoneRule() {
-      return (val) => {
-        if (!val) {
-          return 'Поле обязательно'
-        }
-        // Пример простой проверки на длину номера
-        return val.length >= 10 || 'Номер должен содержать не менее 10 символов'
-      }
-    },
-    emailRule() {
-      return (val) => {
-        if (!val) {
-          return 'Поле обязательно'
-        }
-        // Простейшая проверка формата email
-        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        return pattern.test(val) || 'Неверный формат email'
-      }
-    },
-  },
-  methods: {
-    onSumChange() {
-      // Если выбрана фиксированная сумма, сбрасываем customSum
-      if (this.form.sum !== 'custom') {
-        this.form.customSum = null
-      }
-    },
-    goToStep2() {
-      // Проверка шага 1
-      if (!this.form.certificateNumber) {
-        this.errors.step1 = 'Введите номер сертификата'
-      } else {
-        this.step = '2'
-      }
-    },
-    goToStep3() {
-      // Проверка шага 2
-      if (!this.form.sum) {
-        this.errors.step2 = 'Выберите сумму'
-        return
-      }
-      if (this.form.sum === 'custom') {
-        const check = this.customSumRule(this.form.customSum)
-        if (check !== true) {
-          this.errors.step2 = check
-          return
-        }
-      }
-      this.step = '3'
-    },
-    goToStep4() {
-      // Проверка шага 3
-      if (!this.form.name) {
-        this.errors.step3 = 'Введите имя'
-        return
-      }
-      const phoneCheck = this.phoneRule(this.form.phone)
-      if (phoneCheck !== true) {
-        this.errors.step3 = phoneCheck
-        return
-      }
-      const emailCheck = this.emailRule(this.form.email)
-      if (emailCheck !== true) {
-        this.errors.step3 = emailCheck
-        return
-      }
-      this.step = '4'
-    },
-    submitPayment() {
-      // Проверка принятия условий
-      if (!this.form.acceptPolicy) {
-        this.errors.step4 = 'Необходимо принять условия'
-        return
-      }
-      // Здесь можно вызвать реальный метод оплаты
-      // Для примера сделаем фейковый ответ
+    const form = ref({
+      certificateNumber: '',
+      sum: null,
+      customSum: '',
+      name: '',
+      phone: null,
+      email: '',
+      recipientName: '',
+      recipientPhone: '',
+      recipientEmail: '',
+      giftTo: 'gift',
+      acceptPolicy: false,
+      comment: '',
+      agree: false,
+    })
 
-      // Сброс результата предыдущей попытки
-      this.paymentResult = { status: false, success: false, message: '' }
+    const errors = ref({})
 
-      // Имитация успешной/неуспешной оплаты
-      const isSuccess = Math.random() > 0.5
-      this.paymentResult.status = true
-      this.paymentResult.success = isSuccess
-      this.paymentResult.message = isSuccess
-        ? 'Оплата прошла успешно! Спасибо, что выбрали Warpoint!'
-        : 'Оплата не прошла. Проверьте, достаточно ли средств или повторите попытку.'
-    },
-    formatSum(value) {
-      return Number(value).toLocaleString('ru-RU')
-    },
+    const progressWidth = computed(() => `${(step.value / totalSteps.value) * 100}%`)
+    const isFirstStep = computed(() => step.value === 1)
+    const isLastStep = computed(() => step.value === totalSteps.value)
+
+    function nextStep() {
+      if (step.value < totalSteps.value) {
+        step.value++
+      }
+    }
+
+    function prevStep() {
+      if (step.value > 1) {
+        step.value--
+      }
+    }
+
+    function submitPayment() {
+      alert('Оплата прошла успешно!')
+    }
+
+    return {
+      myLocale,
+      step,
+      totalSteps,
+      dateWindow,
+      form,
+      errors,
+      progressWidth,
+      isFirstStep,
+      isLastStep,
+      nextStep,
+      prevStep,
+      submitPayment,
+    }
   },
 }
 </script>
 
-<style scoped>
-/* Без дополнительных стилей – только базовая логика */
-</style>
+<style scoped></style>

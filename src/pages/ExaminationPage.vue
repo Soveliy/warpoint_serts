@@ -1,15 +1,14 @@
 <template>
-  <q-page class="flex">
+  <q-page class="page">
+    <div class="page__head">
+      <h1 class="page__title">{{ certificateInfo.title }}</h1>
+      <q-img
+        v-if="certificateStatus === 'not_found'"
+        class="page__title-icon"
+        src="~assets/no_search.svg"
+      />
+    </div>
     <q-form class="form" @submit.prevent="checkCertificate">
-      <div class="form__head">
-        <div class="form__title">{{ certificateInfo.title }}</div>
-        <q-img
-          v-if="certificateStatus === 'not_found'"
-          class="form__head-icon"
-          src="~assets/no_search.svg"
-        />
-      </div>
-
       <div
         v-if="certificateStatus !== null && certificateStatus !== 'not_found'"
         class="form__status"
@@ -20,11 +19,11 @@
 
       <div v-if="certificateStatus === 'not_found'" class="form__desc">
         Вы точно указали верные данные? <br />
-        Проверьте правильность заполненных полей и попробуйте еще раз: сертификат не найден.
+        Проверьте правильность заполненных полей и попробуйте еще раз:
       </div>
 
       <div
-        class="form__body"
+        class="form__body form__body--lit"
         :class="{
           'form__body--found': certificateStatus === 'found',
           'form__body--pending': certificateStatus === 'pending_activation',
@@ -37,9 +36,10 @@
                 class="form__input"
                 outlined
                 v-model="certificateNumber"
-                placeholder="0000-0000-0000-0000"
+                placeholder="XX00-0000-0000-0000"
                 label="Номер сертификата"
                 stack-label
+                mask="AA##-####-####-####"
               />
             </div>
             <div class="form__input-container">
@@ -50,6 +50,7 @@
                 placeholder="0000"
                 label="PIN"
                 stack-label
+                mask="####"
               />
             </div>
           </template>
@@ -71,7 +72,9 @@
 
               <div class="certificate__item">
                 <div class="certificate__label">ФИО покупателя</div>
-                <div class="certificate__value">{{ certificateData.owner }}</div>
+                <div class="certificate__value certificate__value--mob-lit">
+                  {{ certificateData.owner }}
+                </div>
               </div>
 
               <div class="certificate__row row justify-between no-wrap">
