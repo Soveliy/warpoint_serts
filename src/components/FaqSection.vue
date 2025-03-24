@@ -99,9 +99,31 @@ const faqItems = ref([
     .q-item {
       padding: 16px 24px;
       box-sizing: border-box;
-      border-radius: 16px;
+
       @media (max-width: 992px) {
         padding: 0.75rem 1rem;
+      }
+    }
+    .q-expansion-item {
+      position: relative;
+      overflow: hidden;
+      background: rgba(91, 137, 248, 0.05);
+      border-radius: 16px;
+      transition: 0.3s;
+      .q-separator {
+        display: none;
+      }
+      .q-card {
+        background: transparent;
+      }
+      &--expanded {
+        background: #282d37;
+        .q-focus-helper {
+          opacity: 0 !important;
+        }
+        .q-item__label {
+          color: #5b89f8;
+        }
       }
     }
     .q-item__label {

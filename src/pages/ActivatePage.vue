@@ -32,6 +32,7 @@
                   mask="AA##-####-####-####"
                   :error="!!errors.certificateNumber"
                   :error-message="errors.certificateNumber"
+                  name="sert_number"
                 />
               </div>
               <q-img loading="eager" class="form__logo" src="~assets/logo.svg" />
@@ -55,6 +56,7 @@
                     unelevated
                     rounded
                     no-wrap
+                    name="sert_sum"
                     :options="[
                       { label: '1 000 ₽', value: '1 000' },
                       { label: '2 000 ₽', value: '2 000' },
@@ -78,6 +80,7 @@
                   placeholder="от 500 до 100 000 ₽"
                   :error="!!errors.customSum"
                   :error-message="errors.customSum"
+                  name="sert_sum"
                 />
               </div>
             </div>
@@ -99,6 +102,9 @@
                   label="Имя"
                   stack-label
                   placeholder="Введите имя"
+                  name="name"
+                  :error="!!errors.name"
+                  :error-message="errors.name"
                 />
               </div>
               <div class="form__item">
@@ -106,6 +112,9 @@
                   <label for="" class="form__item-label">телефон</label>
                   <IntlTelInput
                     v-model="form.phone"
+                    name="phone"
+                    :error="!!errors.phone"
+                    :error-message="errors.phone"
                     :options="{
                       initialCountry: 'ru',
                       separateDialCode: true,
@@ -123,6 +132,9 @@
                   label="email"
                   stack-label
                   placeholder="youremail@email.com"
+                  name="email"
+                  :error="!!errors.email"
+                  :error-message="errors.email"
                 />
               </div>
             </div>
@@ -170,6 +182,9 @@
                   >Политикой обработки персональных данных</a
                 >
               </q-checkbox>
+              <div v-if="form.errors.agree" class="text-negative">
+                {{ form.errors.agree }}
+              </div>
             </div>
             <q-btn
               class="form__button"
@@ -238,7 +253,7 @@ export default {
   setup() {
     const step = ref(1)
     const totalSteps = 4
-    const status = ref(null) // 'success' или 'error'
+    const status = ref(null)
     const form = ref({
       certificateNumber: '',
       sum: '5 000',
@@ -247,6 +262,9 @@ export default {
       phone: '',
       email: '',
       acceptPolicy: false,
+      errors: {
+        agree: '',
+      },
     })
 
     const errors = ref({})
@@ -274,11 +292,12 @@ export default {
     }
 
     function validateStep4() {
-      errors.value.acceptPolicy = form.value.acceptPolicy ? '' : 'Необходимо принять условия'
-      if (!errors.value.acceptPolicy) {
+      if (form.value.acceptPolicy) {
+        form.value.errors.agree = ''
         submitPayment()
         return true
       }
+      form.value.errors.agree = 'Для продолжения необходимо согласие'
       return false
     }
     function validateCurrentStep() {

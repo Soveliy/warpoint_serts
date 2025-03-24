@@ -40,6 +40,7 @@
                 label="Номер сертификата"
                 stack-label
                 mask="AA##-####-####-####"
+                name="sert_number"
               />
             </div>
             <div class="form__input-container">
@@ -51,6 +52,7 @@
                 label="PIN"
                 stack-label
                 mask="####"
+                name="sert_pin"
               />
             </div>
           </template>

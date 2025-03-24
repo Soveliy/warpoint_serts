@@ -77,3 +77,11 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: 'Roboto Flex';
+  font-style: normal;
+  font-weight: normal;
+  src:
+    url('../assets/fonts/RobotoFlex.woff'),
+    url('RobotoFlex.woff') format('woff');
+}
